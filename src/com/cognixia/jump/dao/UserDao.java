@@ -46,6 +46,7 @@ public class UserDao
 	{
 		
 		User user = new User();
+		//login checks by username and password
 		try(PreparedStatement pstmt = conn.prepareStatement("select * from users WHERE username = ? AND p_password = ?"); )
 		{
 			pstmt.setString(1, username);
@@ -55,6 +56,7 @@ public class UserDao
 			
 			while(rs.next())
 			{
+				//Only returns to user id and username
 				int id = rs.getInt("user_id");
 				String uName = rs.getString("username");
 				user.setId(id);
