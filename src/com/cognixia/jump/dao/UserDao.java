@@ -24,12 +24,13 @@ public class UserDao
 			while(rs.next())
 			{
 				int id = rs.getInt("user_id");
-				String username = rs.getString("username");
 				String fName = rs.getString("first_name");
 				String lName = rs.getString("last_name");
+				String contact = rs.getString("contact");
 				String dob = rs.getString("dob");
+				String username = rs.getString("username");
 				
-				User user = new User(id, username, null, fName, lName, dob);
+				User user = new User(id, fName, lName, contact, dob, username, null);
 				
 				allUsers.add(user);
 			}
@@ -40,6 +41,54 @@ public class UserDao
 		}
 		
 		return allUsers;
+	}
+	
+	public int checkUserName(String username)
+	{
+		int i = 0;
+		//SELECT count(user_id) FROM users WHERE username = 'user1';
+		try(PreparedStatement pstmt = conn.prepareStatement("SELECT count(user_id) FROM users WHERE username = ?"))
+		{
+			pstmt.setString(1, username);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			i = rs.getInt("count(user_id)");
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return i;
+	}
+	
+	public boolean createAcc(User newUser)
+	{
+		
+		try( PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users(first_name, last_name, contact, dob, username, p_password) VALUES(?, ?, ?, ?, ?, ?)") )
+		{
+			pstmt.setString(1, newUser.getFirstName());
+			pstmt.setString(2, newUser.getLastName());
+			pstmt.setString(3, newUser.getContact());
+			pstmt.setString(4, newUser.getDob());
+			pstmt.setString(5, newUser.getUsername());
+			pstmt.setString(6, newUser.getPassword());
+			
+			// if update occurred, count will be 1,
+			// if didn't occur, count will be 0
+			int count = pstmt.executeUpdate();
+			
+			if(count > 0) {
+				return true;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return false;
 	}
 	
 	public User login(String username, String password)
