@@ -9,14 +9,15 @@ public class User
 	private String dob;
 	private String username;
 	private String password;
+	private double cash;
 	
 	
 	public User()
 	{
-		this(-1, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+		this(-1, "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", -0.0);
 	}
 	
-	public User(int id, String firstName, String lastName, String contact, String dob, String username, String password)
+	public User(int id, String firstName, String lastName, String contact, String dob, String username, String password, double cash)
 	{
 		this.id = id;
 		this.firstName = firstName;
@@ -25,6 +26,7 @@ public class User
 		this.dob = dob;
 		this.username = username;
 		this.password = password;
+		this.cash = cash;
 	}
 
 
@@ -96,12 +98,20 @@ public class User
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	
+	public double getCash() {
+		return cash;
+	}
 
+	public void setCash(double cash) {
+		this.cash = cash;
+	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", contact=" + contact
-				+ ", dob=" + dob + ", username=" + username + ", password=" + password + "]";
+				+ ", dob=" + dob + ", username=" + username + ", password=" + password + ", cash=" + cash + "]";
 	}
 	
 }

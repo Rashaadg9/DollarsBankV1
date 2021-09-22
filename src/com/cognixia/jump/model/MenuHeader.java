@@ -16,4 +16,9 @@ public class MenuHeader
 	{
 		System.out.println("Enter Login Details");
 	}
+	
+	public void welcomeLoggedIn(String username)
+	{
+		System.out.println("WELCOME " + username);
+	}
 }

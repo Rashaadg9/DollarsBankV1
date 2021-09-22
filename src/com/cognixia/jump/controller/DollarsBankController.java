@@ -15,6 +15,7 @@ public class DollarsBankController
 {
 	static int id = -1;
 	static String username = "N/A";
+	static String fName = "N/A";
 	static boolean finish = false;
 	
 	static MenuHeader header = new MenuHeader();
@@ -51,6 +52,8 @@ public class DollarsBankController
 				break;
 			case 2:
 				login();
+				if( (id != -1) )
+					welcomeLoggedIn();
 				break;
 			case 3:
 				finish = true;
@@ -157,6 +160,19 @@ public class DollarsBankController
 		}
 		newUser.setPassword(input);
 		
+		System.out.println("Initial Deposit Amount: (min $5.00 )");
+		System.out.print("$");
+		double amount = sc.nextDouble();
+		sc.nextLine();
+		while( (amount < 5.00))
+		{
+			System.out.println("Initial Deposit Amount: (min $5.00 )");
+			System.out.print("$");
+			amount = sc.nextDouble();
+			sc.nextLine();
+		}
+		newUser.setCash(amount);
+		
 		if(userDao.createAcc(newUser) == true)
 		{
 			System.out.println("Successfully Created new account with username: " + newUser.getUsername());
@@ -180,11 +196,61 @@ public class DollarsBankController
 		User user = userDao.login(loginChoice1, loginChoice2);
 		id = user.getId();
 		username = user.getUsername();
+		fName = user.getFirstName();
 		
 		System.out.println("Returned info");
 		System.out.println("Username: " + username);
 		System.out.println("ID: " + id);
+		System.out.println("First Name: " + fName);
 
+	}
+	
+	public static void welcomeLoggedIn()
+	{
+		boolean loggedIn = true;
+		while(loggedIn == true)
+		{
+			header.welcomeLoggedIn(fName);
+			System.out.println("1. Deposit Amount");
+			System.out.println("2. Withdraw Amount");
+			System.out.println("3. Funds Transfer");
+			System.out.println("4. View 5 Recent Transactions");
+			System.out.println("5. Display Your Information");
+			System.out.println("6. Sign Out");
+			System.out.print("\nEnter Choice (1, 2, 3, 4, 5, or 6) : ");
+			int choice = sc.nextInt();
+			sc.nextLine();
+			
+			switch(choice)
+			{
+				case 1:
+					//Deposit
+					break;
+				case 2:
+					//Withdraw
+					break;
+				case 3:
+					//Transfer
+					break;
+				case 4:
+					//recent
+					break;
+				case 5:
+					//info
+					break;
+				case 6:
+					id = -1;
+					username = "N/A";
+					fName = "N/A";
+					loggedIn = false;
+					break;
+				default:
+					System.out.println("Invalid option\n");
+					break;
+				
+			}
+		}
+		
 	}
 	
 	public static String sterilize(String input)

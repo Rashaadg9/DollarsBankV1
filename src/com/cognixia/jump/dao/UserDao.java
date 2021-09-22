@@ -30,7 +30,7 @@ public class UserDao
 				String dob = rs.getString("dob");
 				String username = rs.getString("username");
 				
-				User user = new User(id, fName, lName, contact, dob, username, null);
+				User user = new User(id, fName, lName, contact, dob, username, null, -0.0);
 				
 				allUsers.add(user);
 			}
@@ -108,8 +108,10 @@ public class UserDao
 				//Only returns to user id and username
 				int id = rs.getInt("user_id");
 				String uName = rs.getString("username");
+				String fName = rs.getString("first_name");
 				user.setId(id);
 				user.setUsername(uName);
+				user.setFirstName(fName);
 				
 				
 			}
