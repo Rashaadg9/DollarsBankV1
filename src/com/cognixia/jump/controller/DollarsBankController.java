@@ -224,10 +224,10 @@ public class DollarsBankController
 			switch(choice)
 			{
 				case 1:
-					//Deposit
+					deposit();
 					break;
 				case 2:
-					//Withdraw
+					withdraw();
 					break;
 				case 3:
 					//Transfer
@@ -251,6 +251,67 @@ public class DollarsBankController
 			}
 		}
 		
+	}
+	
+	public static void deposit()
+	{
+		double current = userDao.getBalance(id);
+		System.out.println("Current Balance: $" + current);
+		
+		System.out.println("Amount to Deposit: (min $5.00 )");
+		System.out.print("$");
+		double amount = sc.nextDouble();
+		sc.nextLine();
+		while( (amount < 5.00))
+		{
+			System.out.println("Amount to Deposit: (min $5.00 )");
+			System.out.print("$");
+			amount = sc.nextDouble();
+			sc.nextLine();
+		}
+		
+		amount += current;
+		
+		if(userDao.deposit(id, amount) == true)
+		{
+			System.out.println("Successfully deposited cash");
+			System.out.println("New balance: $" + userDao.getBalance(id));
+		}
+		else
+		{
+			System.out.println("deposit failed");
+		}
+	}
+	
+	public static void withdraw()
+	{
+		double current = userDao.getBalance(id);
+		System.out.println("Current Balance: $" + current);
+		
+		System.out.println("Amount to withdraw:");
+		System.out.print("$");
+		double amount = sc.nextDouble();
+		sc.nextLine();
+		while( (amount > current))
+		{
+			System.out.println("Can not withdraw more than available:");
+			System.out.println("Amount to withdraw:");
+			System.out.print("$");
+			amount = sc.nextDouble();
+			sc.nextLine();
+		}
+		
+		amount = current - amount;
+		
+		if(userDao.deposit(id, amount) == true)
+		{
+			System.out.println("Successfully withdrew cash");
+			System.out.println("New balance: $" + userDao.getBalance(id));
+		}
+		else
+		{
+			System.out.println("withdraw failed");
+		}
 	}
 	
 	public static String sterilize(String input)

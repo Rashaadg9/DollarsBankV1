@@ -65,7 +65,7 @@ public class UserDao
 	public boolean createAcc(User newUser)
 	{
 		
-		try( PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users(first_name, last_name, contact, dob, username, p_password) VALUES(?, ?, ?, ?, ?, ?)") )
+		try( PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users(first_name, last_name, contact, dob, username, p_password, cash) VALUES(?, ?, ?, ?, ?, ?, ?)") )
 		{
 			pstmt.setString(1, newUser.getFirstName());
 			pstmt.setString(2, newUser.getLastName());
@@ -73,6 +73,7 @@ public class UserDao
 			pstmt.setString(4, newUser.getDob());
 			pstmt.setString(5, newUser.getUsername());
 			pstmt.setString(6, newUser.getPassword());
+			pstmt.setDouble(7, newUser.getCash());
 			
 			// if update occurred, count will be 1,
 			// if didn't occur, count will be 0
@@ -122,6 +123,47 @@ public class UserDao
 		}
 		
 		return user;
+	}
+	
+	public double getBalance(int id)
+	{
+		double bal = -0.0;
+		try(PreparedStatement pstmt = conn.prepareStatement("select cash from users WHERE user_id = ?"); )
+		{
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			bal = rs.getDouble("cash");
+		}
+		catch(SQLException e)
+		{
+			System.out.println("ERRR");
+		}
+		return bal;
+	}
+	
+	public boolean deposit(int id, double cash)
+	{
+		try( PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET cash = ? WHERE user_id = ?") )
+		{
+			pstmt.setDouble(1, cash);
+			pstmt.setInt(2, id);
+			
+			// if update occurred, count will be 1,
+			// if didn't occur, count will be 0
+			int count = pstmt.executeUpdate();
+			
+			if(count > 0) {
+				return true;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return false;
 	}
 	
 	public void close()
