@@ -176,6 +176,9 @@ public class DollarsBankController
 		if(userDao.createAcc(newUser) == true)
 		{
 			System.out.println("Successfully Created new account with username: " + newUser.getUsername());
+			User user = userDao.login(newUser.getUsername(), newUser.getPassword());
+			double bal = userDao.getBalance(user.getId());
+			userDao.createRecent(user.getId(), bal);
 		}
 		else
 		{
@@ -233,10 +236,10 @@ public class DollarsBankController
 					//Transfer
 					break;
 				case 4:
-					//recent
+					getRecent();
 					break;
 				case 5:
-					//info
+					getInfo();
 					break;
 				case 6:
 					id = -1;
@@ -270,12 +273,13 @@ public class DollarsBankController
 			sc.nextLine();
 		}
 		
-		amount += current;
+		double amount2 = amount + current;
 		
-		if(userDao.deposit(id, amount) == true)
+		if(userDao.deposit(id, amount2) == true)
 		{
 			System.out.println("Successfully deposited cash");
 			System.out.println("New balance: $" + userDao.getBalance(id));
+			userDao.updateRecent(id, amount, "Deposit");
 		}
 		else
 		{
@@ -301,17 +305,29 @@ public class DollarsBankController
 			sc.nextLine();
 		}
 		
-		amount = current - amount;
+		double amount2 = current - amount;
 		
-		if(userDao.deposit(id, amount) == true)
+		if(userDao.deposit(id, amount2) == true)
 		{
 			System.out.println("Successfully withdrew cash");
 			System.out.println("New balance: $" + userDao.getBalance(id));
+			userDao.updateRecent(id, amount, "Withdraw");
 		}
 		else
 		{
 			System.out.println("withdraw failed");
 		}
+	}
+	
+	public static void getInfo()
+	{
+		header.displayInfo(userDao.getUserById(id));
+		
+	}
+	
+	public static void getRecent()
+	{
+		header.displayRecent(userDao.getRecent(id));
 	}
 	
 	public static String sterilize(String input)

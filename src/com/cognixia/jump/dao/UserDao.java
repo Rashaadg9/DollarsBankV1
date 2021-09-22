@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.cognixia.jump.connection.ConnectionManager;
+import com.cognixia.jump.model.Recent;
 import com.cognixia.jump.model.User;
 
 public class UserDao
@@ -43,6 +45,34 @@ public class UserDao
 		return allUsers;
 	}
 	
+	public User getUserById(int id)
+	{
+		User user = new User();
+		
+		try(PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?"); )
+		{
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next())
+			{
+				user.setFirstName(rs.getString("first_name"));
+				user.setLastName(rs.getString("last_name"));
+				user.setContact(rs.getString("contact"));
+				user.setDob(rs.getString("dob"));
+				user.setUsername(rs.getString("username"));
+				user.setCash(rs.getDouble("cash"));
+				
+			}
+			rs.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("ERRR");
+		}
+		
+		return user;
+	}
+	
 	public int checkUserName(String username)
 	{
 		int i = 0;
@@ -53,6 +83,7 @@ public class UserDao
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
 			i = rs.getInt("count(user_id)");
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -92,6 +123,73 @@ public class UserDao
 		return false;
 	}
 	
+	public void createRecent(int id, double cash)
+	{
+		String r1 = "0. Initial Deposit - $" + cash + " on " + new Date();
+		try( PreparedStatement pstmt = conn.prepareStatement("INSERT INTO recent(user_id, r1) VALUES(?, ?)") )
+		{
+			pstmt.setInt(1, id);
+			pstmt.setString(2, r1);
+			pstmt.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public Recent getRecent(int id)
+	{
+		Recent recent = new Recent();
+		
+		try(PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM recent WHERE user_id = ?");)
+		{
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next())
+			{
+				recent.setId(rs.getInt("user_id"));
+				recent.setCount(rs.getInt("count"));
+				recent.setR1(rs.getString("r1"));
+				recent.setR2(rs.getString("r2"));
+				recent.setR3(rs.getString("r3"));
+				recent.setR4(rs.getString("r4"));
+				recent.setR5(rs.getString("r5"));
+			}
+			rs.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return recent;
+	}
+	
+	public void updateRecent(int id, double cash, String type)
+	{
+		Recent recent = getRecent(id);
+		int count = recent.getCount();
+		System.out.println("from recent: count = " + count);
+		String r = (count) + ". " + type + " - $" + cash + " on " + new Date();
+		
+		int count2 = (count % 5) + 1;
+		
+		String query = "UPDATE recent SET count = " + (count + 1) + ", r" + count2 + " = ? WHERE user_id = ?";
+		try( PreparedStatement pstmt = conn.prepareStatement(query) )
+		{
+			pstmt.setString(1, r);
+			pstmt.setInt(2, id);
+			pstmt.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public User login(String username, String password)
 	{
 		
@@ -116,6 +214,7 @@ public class UserDao
 				
 				
 			}
+			rs.close();
 		}
 		catch(SQLException e)
 		{
@@ -134,6 +233,7 @@ public class UserDao
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
 			bal = rs.getDouble("cash");
+			rs.close();
 		}
 		catch(SQLException e)
 		{
