@@ -266,6 +266,54 @@ public class UserDao
 		return false;
 	}
 	
+	public boolean transfer(String username, double cash)
+	{
+		try( PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET cash = ? WHERE username = ?") )
+		{
+			pstmt.setDouble(1, cash);
+			pstmt.setString(2, username);
+			
+			// if update occurred, count will be 1,
+			// if didn't occur, count will be 0
+			int count = pstmt.executeUpdate();
+			
+			if(count > 0) {
+				return true;
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public User getUserByUsername(String username)
+	{
+		User user = new User();
+		
+		try(PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE username = ?"); )
+		{
+			pstmt.setString(1, username);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next())
+			{
+				user.setId(rs.getInt("user_id"));
+				user.setUsername(rs.getString("username"));
+				user.setCash(rs.getDouble("cash"));
+				
+			}
+			rs.close();
+		}
+		catch(SQLException e)
+		{
+			System.out.println("ERRR");
+		}
+		
+		return user;
+	}
+	
 	public void close()
 	{
 		try

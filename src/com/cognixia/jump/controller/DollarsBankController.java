@@ -233,7 +233,7 @@ public class DollarsBankController
 					withdraw();
 					break;
 				case 3:
-					//Transfer
+					transfer();
 					break;
 				case 4:
 					getRecent();
@@ -328,6 +328,56 @@ public class DollarsBankController
 	public static void getRecent()
 	{
 		header.displayRecent(userDao.getRecent(id));
+	}
+	
+	public static void transfer()
+	{
+		header.transfer();
+		System.out.println("Enter Username of account to transfer to");
+		String user = sterilize(sc.nextLine());
+		
+		while( (userDao.checkUserName(user) > 0) == false)
+		{
+			System.out.println("User: " + user + " is INVALID!");
+			System.out.println("Enter Username of account to transfer to");
+			user = sterilize(sc.nextLine());
+		}
+		User me = userDao.getUserById(id);
+		
+		System.out.println("Enter Amount to Transfer");
+		System.out.print("$");
+		double cash = sc.nextDouble();
+		sc.nextLine();
+		
+		while(cash > me.getCash())
+		{
+			System.out.println("Can NOT transfer more than avaliable");
+			System.out.println("Enter Amount to Transfer");
+			System.out.print("$");
+			cash = sc.nextDouble();
+			sc.nextLine();
+		}
+		
+		User notMe = userDao.getUserByUsername(user);
+		
+		double amount = notMe.getCash() + cash;
+		
+		if(userDao.transfer(user, amount) == true)
+		{
+			System.out.println("Successfully Transfered cash to User: " + user);
+			userDao.deposit(id, (me.getCash() - cash) );
+			System.out.println("My balance: $" + userDao.getBalance(id));
+			String typeTo = "Transfered to [" + notMe.getUsername() + "]";
+			String typeFrom = "Recived Transfer from [" + username + "]";
+			userDao.updateRecent(id, cash, typeTo);
+			userDao.updateRecent(notMe.getId(), cash, typeFrom);
+		}
+		else
+		{
+			System.out.println("Transfer failed");
+		}
+		
+		
 	}
 	
 	public static String sterilize(String input)

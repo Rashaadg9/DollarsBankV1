@@ -22,6 +22,11 @@ public class MenuHeader
 		System.out.println("WELCOME " + username);
 	}
 	
+	public void transfer()
+	{
+		System.out.println("Transfer portal");
+	}
+	
 	public void displayInfo(User user)
 	{
 		System.out.println("\n<S------------S> ACCOUNT INFORMATION <S------------S>");
