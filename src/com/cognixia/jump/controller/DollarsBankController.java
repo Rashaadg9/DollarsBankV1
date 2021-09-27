@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.cognixia.jump.dao.UserDao;
 import com.cognixia.jump.model.MenuHeader;
 import com.cognixia.jump.model.User;
+import com.cognixia.jump.utility.ConsoleColor;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,27 +71,27 @@ public class DollarsBankController
 		User newUser = new User();
 		String input;
 		
-		System.out.println("First Name:");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "First Name:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		input = sterilize( sc.nextLine() );
 		while( (input.equals("") || input.equals(" ") || input == null) )
 		{
-			System.out.println("Field must not be blank");
-			System.out.println("First Name:");
+			System.out.println(ConsoleColor.ANSI_RED + "Field must not be blank");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "First Name:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 			input = sterilize( sc.nextLine() );
 		}
 		newUser.setFirstName(input);
 		
-		System.out.println("Last Name:");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Last Name:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		input = sterilize( sc.nextLine() );
 		while( (input.equals("") || input.equals(" ") || input == null) )
 		{
-			System.out.println("Field must not be blank");
-			System.out.println("Last Name:");
+			System.out.println(ConsoleColor.ANSI_RED + "Field must not be blank");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Last Name:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 			input = sterilize( sc.nextLine() );
 		}
 		newUser.setLastName(input);
 		
-		System.out.println("Contact Number (in the format of ###-###-####) :");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Contact Number (in the format of ###-###-####) :" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		input = sterilize( sc.nextLine() );
 		
 		String numberRegex = "\\d{3}-\\d{3}-\\d{4}";
@@ -100,29 +101,29 @@ public class DollarsBankController
 		Matcher matcher = pattern.matcher(input);
 		while( (matcher.matches() == false) )
 		{
-			System.out.println("Incorrect format");
-			System.out.println("Contact Number (in the format of ###-###-####) :");
+			System.out.println(ConsoleColor.ANSI_RED + "Incorrect format");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Contact Number (in the format of ###-###-####) :" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 			input = sterilize( sc.nextLine() );
 			matcher = pattern.matcher(input);
 		}
 		newUser.setContact(input);
 		
-		System.out.println("DOB (in format of MM/DD/YYYY ) :");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "DOB (in format of MM/DD/YYYY ) :" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		input = sterilize( sc.nextLine() );
 		String dateRegex = "\\d{2}\\/\\d{2}\\/\\d{4}";
 		pattern = Pattern.compile(dateRegex);
 		matcher = pattern.matcher(input);
 		while( (matcher.matches() == false) )
 		{
-			System.out.println("Incorrect format");
-			System.out.println("DOB (in format of MM/DD/YYYY ) :");
+			System.out.println(ConsoleColor.ANSI_RED + "Incorrect format");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "DOB (in format of MM/DD/YYYY ) :" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 			input = sterilize( sc.nextLine() );
 			matcher = pattern.matcher(input);
 		}
 		newUser.setDob(input);
 		
 		boolean available = false;
-		System.out.println("Username:");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Username:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		input = sterilize( sc.nextLine() );
 		if(userDao.checkUserName(input) > 0)
 		{
@@ -134,10 +135,10 @@ public class DollarsBankController
 		}
 		while( (input.equals("") || input.equals(" ") || input == null || available == false) )
 		{
-			System.out.println("Field must not be blank");
+			System.out.println(ConsoleColor.ANSI_RED + "Field must not be blank");
 			if(available == false)
-				System.out.println("Username is not available");
-			System.out.println("Username:");
+				System.out.println(ConsoleColor.ANSI_WHITE_BACKGROUND + "Username is not available");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Username:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 			input = sterilize( sc.nextLine() );
 			if(userDao.checkUserName(input) > 0)
 			{
@@ -150,24 +151,24 @@ public class DollarsBankController
 		}
 		newUser.setUsername(input);
 		
-		System.out.println("Password:");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Password:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		input = sterilize( sc.nextLine() );
 		while( (input.equals("") || input.equals(" ") || input == null) )
 		{
-			System.out.println("Field must not be blank");
-			System.out.println("Password:");
+			System.out.println(ConsoleColor.ANSI_RED + "Field must not be blank");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Password:" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 			input = sterilize( sc.nextLine() );
 		}
 		newUser.setPassword(input);
 		
-		System.out.println("Initial Deposit Amount: (min $5.00 )");
-		System.out.print("$");
+		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Initial Deposit Amount: (min $5.00 )" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
+		System.out.print(ConsoleColor.ANSI_GREEN +"$" + ConsoleColor.ANSI_CYAN);
 		double amount = sc.nextDouble();
 		sc.nextLine();
 		while( (amount < 5.00))
 		{
-			System.out.println("Initial Deposit Amount: (min $5.00 )");
-			System.out.print("$");
+			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Initial Deposit Amount: (min $5.00 )" + ConsoleColor.ANSI_RESET);
+			System.out.print(ConsoleColor.ANSI_GREEN +"$" + ConsoleColor.ANSI_CYAN);
 			amount = sc.nextDouble();
 			sc.nextLine();
 		}
@@ -175,14 +176,14 @@ public class DollarsBankController
 		
 		if(userDao.createAcc(newUser) == true)
 		{
-			System.out.println("Successfully Created new account with username: " + newUser.getUsername());
+			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " Created new account with username: " + ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + newUser.getUsername() + ConsoleColor.ANSI_RESET);
 			User user = userDao.login(newUser.getUsername(), newUser.getPassword());
 			double bal = userDao.getBalance(user.getId());
 			userDao.createRecent(user.getId(), bal);
 		}
 		else
 		{
-			System.out.println("Account creation failed");
+			System.out.println(ConsoleColor.ANSI_RED + "Account creation failed" + ConsoleColor.ANSI_RESET);
 		}
 		
 	}
@@ -201,10 +202,10 @@ public class DollarsBankController
 		username = user.getUsername();
 		fName = user.getFirstName();
 		
-		System.out.println("Returned info");
-		System.out.println("Username: " + username);
-		System.out.println("ID: " + id);
-		System.out.println("First Name: " + fName);
+		if(id == -1)
+		{
+			System.out.println(ConsoleColor.ANSI_RED + "INVALID username & password combination" + ConsoleColor.ANSI_RESET);
+		}
 
 	}
 	
@@ -213,14 +214,14 @@ public class DollarsBankController
 		boolean loggedIn = true;
 		while(loggedIn == true)
 		{
-			header.welcomeLoggedIn(fName);
-			System.out.println("1. Deposit Amount");
+			header.welcomeLoggedIn(fName, userDao.getBalance(id));
+			System.out.println(ConsoleColor.ANSI_YELLOW + "1. Deposit Amount");
 			System.out.println("2. Withdraw Amount");
 			System.out.println("3. Funds Transfer");
 			System.out.println("4. View 5 Recent Transactions");
 			System.out.println("5. Display Your Information");
 			System.out.println("6. Sign Out");
-			System.out.print("\nEnter Choice (1, 2, 3, 4, 5, or 6) : ");
+			System.out.print("\nEnter Choice (1, 2, 3, 4, 5, or 6) : " +  ConsoleColor.ANSI_RESET);
 			int choice = sc.nextInt();
 			sc.nextLine();
 			
@@ -248,7 +249,7 @@ public class DollarsBankController
 					loggedIn = false;
 					break;
 				default:
-					System.out.println("Invalid option\n");
+					System.out.println(ConsoleColor.ANSI_GREEN + "Invalid option\n" + ConsoleColor.ANSI_RESET);
 					break;
 				
 			}
@@ -267,7 +268,7 @@ public class DollarsBankController
 		sc.nextLine();
 		while( (amount < 5.00))
 		{
-			System.out.println("Amount to Deposit: (min $5.00 )");
+			System.out.println("Amount to Deposit: " + ConsoleColor.ANSI_RED + "(min $5.00 )" + ConsoleColor.ANSI_RESET);
 			System.out.print("$");
 			amount = sc.nextDouble();
 			sc.nextLine();
@@ -277,13 +278,13 @@ public class DollarsBankController
 		
 		if(userDao.deposit(id, amount2) == true)
 		{
-			System.out.println("Successfully deposited cash");
+			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " deposited cash");
 			System.out.println("New balance: $" + userDao.getBalance(id));
 			userDao.updateRecent(id, amount, "Deposit");
 		}
 		else
 		{
-			System.out.println("deposit failed");
+			System.out.println(ConsoleColor.ANSI_RED + "deposit failed" + ConsoleColor.ANSI_RESET);
 		}
 	}
 	
@@ -298,7 +299,7 @@ public class DollarsBankController
 		sc.nextLine();
 		while( (amount > current))
 		{
-			System.out.println("Can not withdraw more than available:");
+			System.out.println(ConsoleColor.ANSI_RED + "Can not withdraw more than available:" + ConsoleColor.ANSI_RESET);
 			System.out.println("Amount to withdraw:");
 			System.out.print("$");
 			amount = sc.nextDouble();
@@ -309,13 +310,13 @@ public class DollarsBankController
 		
 		if(userDao.deposit(id, amount2) == true)
 		{
-			System.out.println("Successfully withdrew cash");
+			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " withdrew cash");
 			System.out.println("New balance: $" + userDao.getBalance(id));
 			userDao.updateRecent(id, amount, "Withdraw");
 		}
 		else
 		{
-			System.out.println("withdraw failed");
+			System.out.println(ConsoleColor.ANSI_RED + "Withdraw failed" + ConsoleColor.ANSI_RESET);
 		}
 	}
 	
@@ -338,7 +339,7 @@ public class DollarsBankController
 		
 		while( (userDao.checkUserName(user) > 0) == false)
 		{
-			System.out.println("User: " + user + " is INVALID!");
+			System.out.println(ConsoleColor.ANSI_RED + "User: " + user + " is INVALID!" + ConsoleColor.ANSI_RESET);
 			System.out.println("Enter Username of account to transfer to");
 			user = sterilize(sc.nextLine());
 		}
@@ -351,7 +352,7 @@ public class DollarsBankController
 		
 		while(cash > me.getCash())
 		{
-			System.out.println("Can NOT transfer more than avaliable");
+			System.out.println(ConsoleColor.ANSI_RED + "Can NOT transfer more than avaliable" + ConsoleColor.ANSI_RESET);
 			System.out.println("Enter Amount to Transfer");
 			System.out.print("$");
 			cash = sc.nextDouble();
@@ -364,7 +365,7 @@ public class DollarsBankController
 		
 		if(userDao.transfer(user, amount) == true)
 		{
-			System.out.println("Successfully Transfered cash to User: " + user);
+			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " Transfered cash to User: " + user);
 			userDao.deposit(id, (me.getCash() - cash) );
 			System.out.println("My balance: $" + userDao.getBalance(id));
 			String typeTo = "Transfered to [" + notMe.getUsername() + "]";
@@ -374,7 +375,7 @@ public class DollarsBankController
 		}
 		else
 		{
-			System.out.println("Transfer failed");
+			System.out.println(ConsoleColor.ANSI_RED + "Transfer failed" + ConsoleColor.ANSI_RESET);
 		}
 		
 		
