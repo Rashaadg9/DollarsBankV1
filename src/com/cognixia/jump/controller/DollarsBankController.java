@@ -1,6 +1,7 @@
 package com.cognixia.jump.controller;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -43,8 +44,17 @@ public class DollarsBankController
 		System.out.println("2. Login");
 		System.out.println("3. Exit");
 		System.out.print("Enter choice (1, 2, or 3) : ");
-		int choice = sc.nextInt();
-		sc.nextLine();
+		int choice = 0;
+		try
+		{
+			choice = sc.nextInt();
+			sc.nextLine();
+		}
+		catch(InputMismatchException e)
+		{
+			System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+			sc.nextLine();
+		}
 		
 		switch(choice)
 		{
@@ -163,14 +173,33 @@ public class DollarsBankController
 		
 		System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Initial Deposit Amount: (min $5.00 )" + ConsoleColor.ANSI_RESET + ConsoleColor.ANSI_CYAN);
 		System.out.print(ConsoleColor.ANSI_GREEN +"$" + ConsoleColor.ANSI_CYAN);
-		double amount = sc.nextDouble();
-		sc.nextLine();
-		while( (amount < 5.00))
+		double amount = 0.0;
+		
+		try
+		{
+			amount = sc.nextDouble();
+			sc.nextLine();
+		}
+		catch(InputMismatchException e)
+		{
+			System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+			sc.nextLine();
+		}
+		
+		while( (amount < 5.00) || amount == 0.0)
 		{
 			System.out.println(ConsoleColor.ANSI_BLUE + ConsoleColor.ANSI_WHITE_BACKGROUND + "Initial Deposit Amount: (min $5.00 )" + ConsoleColor.ANSI_RESET);
 			System.out.print(ConsoleColor.ANSI_GREEN +"$" + ConsoleColor.ANSI_CYAN);
-			amount = sc.nextDouble();
-			sc.nextLine();
+			try
+			{
+				amount = sc.nextDouble();
+				sc.nextLine();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+				sc.nextLine();
+			}
 		}
 		newUser.setCash(amount);
 		
@@ -222,9 +251,17 @@ public class DollarsBankController
 			System.out.println("5. Display Your Information");
 			System.out.println("6. Sign Out");
 			System.out.print("\nEnter Choice (1, 2, 3, 4, 5, or 6) : " +  ConsoleColor.ANSI_RESET);
-			int choice = sc.nextInt();
-			sc.nextLine();
-			
+			int choice = 0;
+			try
+			{
+				choice = sc.nextInt();
+				sc.nextLine();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+				sc.nextLine();
+			}
 			switch(choice)
 			{
 				case 1:
@@ -264,14 +301,33 @@ public class DollarsBankController
 		
 		System.out.println("Amount to Deposit: (min $5.00 )");
 		System.out.print("$");
-		double amount = sc.nextDouble();
-		sc.nextLine();
+		double amount = 0.0;
+		
+		try
+		{
+			amount = sc.nextDouble();
+			sc.nextLine();
+		}
+		catch(InputMismatchException e)
+		{
+			System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+			sc.nextLine();
+		}
+		
 		while( (amount < 5.00))
 		{
 			System.out.println("Amount to Deposit: " + ConsoleColor.ANSI_RED + "(min $5.00 )" + ConsoleColor.ANSI_RESET);
 			System.out.print("$");
-			amount = sc.nextDouble();
-			sc.nextLine();
+			try
+			{
+				amount = sc.nextDouble();
+				sc.nextLine();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+				sc.nextLine();
+			};
 		}
 		
 		double amount2 = amount + current;
@@ -295,15 +351,35 @@ public class DollarsBankController
 		
 		System.out.println("Amount to withdraw:");
 		System.out.print("$");
-		double amount = sc.nextDouble();
-		sc.nextLine();
-		while( (amount > current))
+		double amount = 0.0;
+		
+		try
 		{
-			System.out.println(ConsoleColor.ANSI_RED + "Can not withdraw more than available:" + ConsoleColor.ANSI_RESET);
-			System.out.println("Amount to withdraw:");
-			System.out.print("$");
 			amount = sc.nextDouble();
 			sc.nextLine();
+		}
+		catch(InputMismatchException e)
+		{
+			System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+			sc.nextLine();
+		}
+		
+		while( (amount > current) || amount == 0.0)
+		{
+			if((amount > current))
+				System.out.println(ConsoleColor.ANSI_RED + "Can not withdraw more than available:" + ConsoleColor.ANSI_RESET);
+			System.out.println("Amount to withdraw:");
+			System.out.print("$");
+			try
+			{
+				amount = sc.nextDouble();
+				sc.nextLine();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+				sc.nextLine();
+			}
 		}
 		
 		double amount2 = current - amount;
@@ -347,16 +423,35 @@ public class DollarsBankController
 		
 		System.out.println("Enter Amount to Transfer");
 		System.out.print("$");
-		double cash = sc.nextDouble();
-		sc.nextLine();
+		double cash = 0.0;
 		
-		while(cash > me.getCash())
+		try
 		{
-			System.out.println(ConsoleColor.ANSI_RED + "Can NOT transfer more than avaliable" + ConsoleColor.ANSI_RESET);
-			System.out.println("Enter Amount to Transfer");
-			System.out.print("$");
 			cash = sc.nextDouble();
 			sc.nextLine();
+		}
+		catch(InputMismatchException e)
+		{
+			System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+			sc.nextLine();
+		}
+		
+		while(cash > me.getCash() || cash == 0.0)
+		{
+			if(cash > me.getCash())
+				System.out.println(ConsoleColor.ANSI_RED + "Can NOT transfer more than avaliable" + ConsoleColor.ANSI_RESET);
+			System.out.println("Enter Amount to Transfer");
+			System.out.print("$");
+			try
+			{
+				cash = sc.nextDouble();
+				sc.nextLine();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+				sc.nextLine();
+			}
 		}
 		
 		User notMe = userDao.getUserByUsername(user);
