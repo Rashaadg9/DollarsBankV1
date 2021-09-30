@@ -171,7 +171,6 @@ public class UserDao
 	{
 		Recent recent = getRecent(id);
 		int count = recent.getCount();
-		System.out.println("from recent: count = " + count);
 		String r = (count) + ". " + type + " - $" + cash + " on " + new Date();
 		
 		int count2 = (count % 5) + 1;

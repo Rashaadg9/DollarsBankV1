@@ -52,7 +52,7 @@ public class DollarsBankController
 		}
 		catch(InputMismatchException e)
 		{
-			System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+			System.out.println("\n" + ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
 			sc.nextLine();
 		}
 		
@@ -259,7 +259,7 @@ public class DollarsBankController
 			}
 			catch(InputMismatchException e)
 			{
-				System.out.println(ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
+				System.out.println("\n" + ConsoleColor.ANSI_RED + "ERROR Invalid input type" + ConsoleColor.ANSI_RESET);
 				sc.nextLine();
 			}
 			switch(choice)
@@ -286,7 +286,7 @@ public class DollarsBankController
 					loggedIn = false;
 					break;
 				default:
-					System.out.println(ConsoleColor.ANSI_GREEN + "Invalid option\n" + ConsoleColor.ANSI_RESET);
+					System.out.println("\n" + ConsoleColor.ANSI_RED + "Invalid option\n" + ConsoleColor.ANSI_RESET);
 					break;
 				
 			}
@@ -334,7 +334,7 @@ public class DollarsBankController
 		
 		if(userDao.deposit(id, amount2) == true)
 		{
-			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " deposited cash");
+			System.out.println("\n" + ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " deposited cash");
 			System.out.println("New balance: $" + userDao.getBalance(id));
 			userDao.updateRecent(id, amount, "Deposit");
 		}
@@ -386,7 +386,7 @@ public class DollarsBankController
 		
 		if(userDao.deposit(id, amount2) == true)
 		{
-			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " withdrew cash");
+			System.out.println("\n" + ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " withdrew cash");
 			System.out.println("New balance: $" + userDao.getBalance(id));
 			userDao.updateRecent(id, amount, "Withdraw");
 		}
@@ -460,7 +460,7 @@ public class DollarsBankController
 		
 		if(userDao.transfer(user, amount) == true)
 		{
-			System.out.println(ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " Transfered cash to User: " + user);
+			System.out.println("\n" + ConsoleColor.ANSI_GREEN + "Successfully" + ConsoleColor.ANSI_RESET + " Transfered cash to User: " + user);
 			userDao.deposit(id, (me.getCash() - cash) );
 			System.out.println("My balance: $" + userDao.getBalance(id));
 			String typeTo = "Transfered to [" + notMe.getUsername() + "]";
