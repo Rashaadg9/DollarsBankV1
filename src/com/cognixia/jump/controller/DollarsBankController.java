@@ -29,6 +29,11 @@ public class DollarsBankController
 		
 		while(finish != true)
 		{
+			if(userDao.getConn() == null)
+			{
+				System.out.println(ConsoleColor.ANSI_RED + "Check database availability status or connection credentials" + ConsoleColor.ANSI_RESET);
+				return;
+			}
 			welcome();
 		}
 		
